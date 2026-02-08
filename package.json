@@ -7,14 +7,20 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:anvil": "bash test/start-anvil.sh",
+    "test:setup": "node test/setup-local.mjs",
+    "test:flow": "node test/test-full-flow.mjs",
+    "test:all": "npm run test:setup && npm run test:flow"
   },
   "dependencies": {
     "@esbuild/linux-x64": "^0.27.3",
     "@metamask/smart-accounts-kit": "^0.4.0-beta.1",
+    "@safe-global/protocol-kit": "^6.1.2",
     "@safe-global/safe-apps-provider": "^0.18.6",
     "@safe-global/safe-apps-react-sdk": "^4.7.2",
     "@safe-global/safe-apps-sdk": "^9.1.0",
+    "@safe-global/types-kit": "^3.0.0",
     "@tanstack/react-query": "^5.90.20",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

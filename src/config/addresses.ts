@@ -1,8 +1,5 @@
 import { type Address } from 'viem'
 
-// TODO: Replace with actual deployed addresses once confirmed
-// These are placeholder addresses that need to be filled in
-
 export interface ChainAddresses {
   delegationManager: Address
   delegatorModuleFactory: Address
@@ -10,34 +7,45 @@ export interface ChainAddresses {
   erc20PeriodTransferEnforcer: Address
   valueLteEnforcer: Address
   timestampEnforcer: Address
+  allowedTargetsEnforcer: Address
+  allowedMethodsEnforcer: Address
+  limitedCallsEnforcer: Address
 }
 
 // DelegationManager from the Delegation Framework v1.3.0
-// This address is the same across all chains (deterministic deployment)
+// Same across all chains (deterministic deployment)
 const DELEGATION_MANAGER: Address = '0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3'
+
+// Enforcer addresses (same on Base Sepolia and Base Mainnet)
+const SHARED_ENFORCERS = {
+  nativeTokenPeriodTransferEnforcer: '0x9BC0FAf4Aca5AE429F4c06aEEaC517520CB16BD9' as Address,
+  erc20PeriodTransferEnforcer: '0x474e3Ae7E169e940607cC624Da8A15Eb120139aB' as Address,
+  valueLteEnforcer: '0x92Bf12322527cAA612fd31a0e810472BBB106A8F' as Address,
+  timestampEnforcer: '0x1046bb45C8d673d4ea75321280DB34899413c069' as Address,
+  allowedTargetsEnforcer: '0x7F20f61b1f09b08D970938F6fa563634d65c4EeB' as Address,
+  allowedMethodsEnforcer: '0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5' as Address,
+  limitedCallsEnforcer: '0x04658B29F6b82ed55274221a06Fc97D318E25416' as Address,
+}
 
 export const addresses: Record<number, ChainAddresses> = {
   // Base Sepolia (84532)
   84532: {
     delegationManager: DELEGATION_MANAGER,
-    // TODO: Get actual DeleGatorModuleFactory address for Base Sepolia
-    delegatorModuleFactory: '0x0000000000000000000000000000000000000000' as Address,
-    // TODO: Get actual enforcer addresses for Base Sepolia
-    nativeTokenPeriodTransferEnforcer: '0x0000000000000000000000000000000000000000' as Address,
-    erc20PeriodTransferEnforcer: '0x0000000000000000000000000000000000000000' as Address,
-    valueLteEnforcer: '0x0000000000000000000000000000000000000000' as Address,
-    timestampEnforcer: '0x0000000000000000000000000000000000000000' as Address,
+    delegatorModuleFactory: '0x0000000000000000000000000000000000000000' as Address, // Deploy via test:setup
+    ...SHARED_ENFORCERS,
   },
   // Base Mainnet (8453)
   8453: {
     delegationManager: DELEGATION_MANAGER,
-    // TODO: Get actual DeleGatorModuleFactory address for Base Mainnet
-    delegatorModuleFactory: '0x0000000000000000000000000000000000000000' as Address,
-    // TODO: Get actual enforcer addresses for Base Mainnet
-    nativeTokenPeriodTransferEnforcer: '0x0000000000000000000000000000000000000000' as Address,
-    erc20PeriodTransferEnforcer: '0x0000000000000000000000000000000000000000' as Address,
-    valueLteEnforcer: '0x0000000000000000000000000000000000000000' as Address,
-    timestampEnforcer: '0x0000000000000000000000000000000000000000' as Address,
+    delegatorModuleFactory: '0x0D0421e43057bf850e243EcDA2AD8966C8D5877B' as Address,
+    ...SHARED_ENFORCERS,
+  },
+  // Localhost / Anvil (forked Base Sepolia, uses same chain ID)
+  // When running locally, the factory address comes from test/deployment.json
+  31337: {
+    delegationManager: DELEGATION_MANAGER,
+    delegatorModuleFactory: '0x0000000000000000000000000000000000000000' as Address, // Set from deployment.json
+    ...SHARED_ENFORCERS,
   },
 }
 
